@@ -15,7 +15,7 @@ A labelled set of 500+ received emails from the Enron corpus, for training and t
 | `*.ipynb` | Kaggle notebook: pull, clean and sample the emails, one step per cell |
 
 ## Kaggle notebook
-Link: TBD (public, run with outputs)
+Link: https://www.kaggle.com/code/rehanmhate/enron-mail
 
 ## Author
 Kaggle: rehanmhate

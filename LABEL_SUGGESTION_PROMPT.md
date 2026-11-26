@@ -3,8 +3,24 @@
 Suggested labels in `label_suggestions.csv` were produced by **Claude Opus 5.5** (Anthropic, via Claude Code), on request.
 They are suggestions only. Every final `category` in `emails.csv` was chosen by the intern after reading the email.
 
-## Request (from the intern)
-"can you do the labelling"
+## Method
+
+**Task setup.** Each email gets exactly one label from a closed set of 17 categories, defined in the labelling guide (version 2026-11-10). The model ran over the 592 candidates in `candidates.csv` (notebook Step 12) and, in a second run, over the 15 bounce top-up emails in `bounce_topup.csv` (notebook Step 13). That makes 607 emails in total.
+
+**Input representation.** A small local script turned each email into one compact text record:
+`row index | key | From | To | Subject`, followed by the body with all whitespace collapsed to single spaces.
+- Header fields were cut to fixed lengths: From to 60 characters, To to 80, Subject to 90.
+- The body was cut to a fixed prefix so that each batch fit in the model's context window: 600 characters for rows 0–74, 450 for rows 75–439, and 300 for rows 440–591 and the 15 top-up emails. Quoted replies, forwarded headers and signatures inside that prefix were left in.
+- The `picked_from` column (the keyword pool an email was sampled from) was **not** included in the input, so the pool could not act as a shortcut label. The `key` (mailbox/folder/file) was included, and folder names such as `junk` or `calendar` were visible.
+
+**Batching.** 7 batches: rows 0–74, 75–159, 160–249, 250–344, 345–439, 440–591, and the 15 top-up rows. Each batch was labelled in a single pass, in row order.
+
+**Output format and validation.** For each email the model wrote one line: `row index | category | note` (the note is empty when the call is clear). A build script then joined these lines back to the CSV and checked that:
+- every row index from 0 to N−1 has exactly one label (no gaps, no duplicates);
+- every label is one of the 17 allowed categories.
+The result was saved as `label_suggestions.csv` (key, suggested_category, suggested_note).
+
+**Ambiguity and exclusion handling.** When the guide allowed more than one reading, the model still picked one category and wrote the alternative and the reason in `suggested_note`, for example "could be newsletter". Rows that break a dataset rule rather than a labelling rule were marked in the note for removal instead of being labelled away. These were bodies containing only an attachment filename or a MIME parsing error (no body text), and mail written by the mailbox owner (outgoing, not received). `make_emails.py` drops every row whose note says "drop".
 
 ## Instructions the model followed, word for word
 

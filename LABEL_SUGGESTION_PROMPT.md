@@ -36,5 +36,12 @@ They are suggestions only. Every final `category` in `emails.csv` was chosen by 
 
 ## How the suggestions were used
 1. `label_suggestions.csv` (key, suggested_category, suggested_note) was committed before review.
-2. The intern read every email and set `category` and `unsure_note` himself.
+2. Intern review of every label: status and hours are recorded in DATASHEET.md.
 3. Changed suggestions = rows where `category` != `suggested_category` (counted in the datasheet).
+
+## Second pass by the model (consistency check)
+After the first pass, the model ran rule checks (FW: subjects, "Undeliverable" subjects whose body says delivered/relayed, postmaster senders, Enron senders in outside categories) and changed 3 of its own suggestions in `candidates_labelled.csv`:
+- skilling-j/deleted_items/515: vendor_or_partner_conversation -> chain_forward_by_person
+- stepenovitch-j/deleted_items/32: bounce -> auto_reply (body says message relayed)
+- stepenovitch-j/deleted_items/50: bounce -> auto_reply (body says message relayed)
+These are model changes, not intern changes; `label_suggestions.csv` keeps the first-pass suggestions.

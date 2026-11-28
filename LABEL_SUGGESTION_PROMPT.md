@@ -1,7 +1,7 @@
 # Label suggestions: tool, model and prompt
 
 Suggested labels in `label_suggestions.csv` were produced by **Claude Opus 5.5** (Anthropic, via Claude Code), on request.
-They are suggestions only. Every final `category` in `emails.csv` was chosen by the intern after reading the email.
+The final `category` values in `emails.csv` are the model's labels: the intern changed none of them during review (see DATASHEET.md).
 
 ## Method
 
@@ -52,7 +52,7 @@ The result was saved as `label_suggestions.csv` (key, suggested_category, sugges
 
 ## How the suggestions were used
 1. `label_suggestions.csv` (key, suggested_category, suggested_note) was committed before review.
-2. Intern review of every label: status and hours are recorded in DATASHEET.md.
+2. The intern looked over the labels between 03:54 and 04:40 on 2026-11-27 and changed none (DATASHEET.md, Labelling).
 3. Changed suggestions = rows where `category` != `suggested_category` (counted in the datasheet).
 
 ## Second pass by the model (consistency check)

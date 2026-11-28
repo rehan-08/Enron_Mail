@@ -24,12 +24,12 @@ A labelled set of 603 received emails from 136 Enron mailboxes, for training and
 | `bounce_topup.csv` | 15 extra bounce candidates exported by notebook Step 13 |
 | `label_suggestions.csv` | First-pass label suggestions from Claude Opus 5.5, committed before review |
 | `LABEL_SUGGESTION_PROMPT.md` | The model, the exact instructions it followed, and its 3 second-pass changes |
-| `candidates_labelled.csv` | All 607 candidates with reviewed labels |
+| `candidates_labelled.csv` | All 607 candidates with final labels |
 | `make_emails.py` | Builds `emails.csv` from `candidates_labelled.csv`: drops the 4 flagged rows, checks the rules, prints counts |
 
 ## Pipeline
 1. Kaggle notebook: load, drop sent folders and the owner's own sent mail, clean, then sample, which gives `candidates.csv` + `bounce_topup.csv`.
-2. Labels: LLM suggestions in `label_suggestions.csv`, then a review of every row by hand, which gives `candidates_labelled.csv`.
+2. Labels: LLM suggestions in `label_suggestions.csv`, plus a model consistency pass (3 changes) and a look-over by the intern (0 changes), which gives `candidates_labelled.csv`.
 3. `python make_emails.py` gives `emails.csv`.
 
 ## Kaggle notebook
